@@ -24,6 +24,49 @@ app.get('/api/get', (req, res) => {
     })
 })
 
+// API to insert contact
+app.post('/api/post', (req, res) => {
+    const { name, email, contact } = req.body
+    const sqlInsert = "INSERT INTO contact_db(name, email, contact) VALUES(?, ?, ?)"
+    
+    db.query(sqlInsert, [name, email, contact], (err, result) => {
+        if(err) console.log('error : ' + err)
+        else res.send(result)
+    })
+})
+
+// API to remove contact
+app.delete('/api/remove/:id', (req, res) => {
+    const { id } = req.params
+    const sqlRemove = "DELETE FROM contact_db WHERE id = ?"
+    
+    db.query(sqlRemove, id, (err, result) => {
+        if(err) console.log('error : ' + err)
+        else res.send(result)
+    })
+})
+
+// API to get contact by ID
+app.get('/api/get/:id', (req, res) => {
+    const { id } = req.params
+    const sqlGet = "SELECT * FROM crud_contact.contact_db WHERE id = ?"
+    db.query(sqlGet, id, (err, result) => {
+        if(err) console.log('error : ' + err)
+        else res.send(result)
+    })
+})
+
+// API to update contact
+app.put('/api/update/:id', (req, res) => {
+    const { id } = req.params
+    const { name, email, contact } = req.body
+    const sqlUpdate = "UPDATE crud_contact.contact_db SET name = ?, email = ? ,contact = ? WHERE id = ?"
+    db.query(sqlUpdate, [name, email, contact, id], (err, result) => {
+        if(err) console.log('error : ' + err)
+        else res.send(result)
+    })
+})
+
 app.get('/', (req, res) => {
     // const sqlInsert = "INSERT INTO contact_db(name, email, contact) VALUES ('neymar', 'neymar@neymar.junio', '45865455')"
     // db.query(sqlInsert, (err, result) => {
